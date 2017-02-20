@@ -16,6 +16,21 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" android:theme="@style/AppTheme.NoActionBar"></activity>
+        <provider android:name=".DB.ContentProviderDB"
+            android:authorities="org.cuatrovientos.springfrontend.sqlcommand">
+            <uses-permission android:name="org.cuatrovientos.springfrontend.sqlcommand.READ" />
+        </provider>
+        <service
+            android:name=".authority.AuthenticatorService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/accountauth" />
+        </service>
     </application>
 
 </manifest>
