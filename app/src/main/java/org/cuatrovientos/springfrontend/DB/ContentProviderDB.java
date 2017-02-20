@@ -47,12 +47,35 @@ public class ContentProviderDB extends ContentProvider {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
         // Get all : GET
-        // This will match: content://org.cuatrovientos.springfrontend.sqlcommand/api
-        uriMatcher.addURI("org.cuatrovientos.springfrontend.sqlcommand", "api/", 1);
+        // This will match: content://org.cuatrovientos.springfrontend.sqlcommand/employees
+        uriMatcher.addURI("org.cuatrovientos.springfrontend.sqlcommand", "employees/", 1);
 
         // Get one : GET
-        // This will match: content://org.cuatrovientos.springfrontend.sqlcommand/api/{id}
-        uriMatcher.addURI("org.cuatrovientos.springfrontend.sqlcommand", "api/id/", 2);
+        // This will match: content://org.cuatrovientos.springfrontend.sqlcommand/employees/{id}
+        uriMatcher.addURI("org.cuatrovientos.springfrontend.sqlcommand", "employees/id/", 2);
+
+        // the last one from the backend
+        // This will match: content://org.cuatrovientos.springfrontend.sqlcommand/employees/last/backend
+        uriMatcher.addURI("org.cuatrovientos.springfrontend.sqlcommand", "employees/lastbackend", 3);
+
+        // This will match: content://org.cuatrovientos.springfrontend.sqlcommand/employees/last/local
+        uriMatcher.addURI("org.cuatrovientos.springfrontend.sqlcommand", "employees/lastlocal", 4);
+
+        // This will match: content://org.cuatrovientos.springfrontend.sqlcommand/deleted
+        uriMatcher.addURI("org.cuatrovientos.springfrontend.sqlcommand", "deleted", 5);
+
+        // This will match: content://org.cuatrovientos.springfrontend.sqlcommand/updated
+        uriMatcher.addURI("org.cuatrovientos.springfrontend.sqlcommand", "updated", 6);
+
+        // This will match: content://org.cuatrovientos.springfrontend.sqlcommand/delete/tabledeleted
+        uriMatcher.addURI("org.cuatrovientos.springfrontend.sqlcommand", "delete/tabledeleted", 7);
+
+        // This will match: content://org.cuatrovientos.springfrontend.sqlcommand/delete/employees
+        uriMatcher.addURI("org.cuatrovientos.springfrontend.sqlcommand", "delete/employees", 8);
+
+        // This will match: content://org.cuatrovientos.springfrontend.sqlcommand/delete/tableupdated
+        uriMatcher.addURI("org.cuatrovientos.springfrontend.sqlcommand", "delete/tableupdated", 9);
+
 
     }
 
@@ -65,7 +88,19 @@ public class ContentProviderDB extends ContentProvider {
                 return dbAdapter.getAll();
             case 2:
                 Log.d("LARRIS:DEBUG", "query to 2.");
-                dbAdapter.getEmployee(Long.parseLong(uri.getLastPathSegment()));
+                return dbAdapter.getEmployee(Long.parseLong(uri.getLastPathSegment()));
+            case 3:
+                Log.d("LARRIS:DEBUG", "query to 3. " + uri.getLastPathSegment());
+                return dbAdapter.getLastBackend();
+            case 4:
+                Log.d("LARRIS:DEBUG", "query to 4. " + uri.getLastPathSegment());
+                return dbAdapter.getLastLocal();
+            case 5:
+                Log.d("LARRIS:DEBUG", "query to 5. " + uri.getLastPathSegment());
+                return dbAdapter.getDeleted();
+            case 6:
+                Log.d("LARRIS:DEBUG", "query to 6. " + uri.getLastPathSegment());
+                return dbAdapter.getUpdated();
             default:
                 break;
         }
@@ -80,7 +115,6 @@ public class ContentProviderDB extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         Log.d("LARRIS:DEBUG", "ContentProvider > insert " + uri);
-        Format formatter;
 
         Employee employee = new Employee();
         employee.setId(values.getAsInteger("id"));
@@ -90,14 +124,27 @@ public class ContentProviderDB extends ContentProvider {
         employee.setIdBackend(values.getAsInteger("id_backend"));
 
         Long id = dbAdapter.insertEmployee(employee);
-        Uri resultUri = ContentUris.withAppendedId(Uri.parse("content://org.cuatrovientos.springfrontend.sqlcommand/"), id);
+        Uri resultUri = Uri.parse("content://org.cuatrovientos.springfrontend.sqlcommand/2");
         return resultUri;
     }
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         Log.d("LARRIS:DEBUG", "ContentProvider > " + uri);
-        return dbAdapter.deleteEmployee(Long.parseLong(uri.getLastPathSegment()));
+        switch (uriMatcher.match(uri)) {
+            case 7:
+                Log.d("LARRIS:DEBUG", "query to 7.");
+                return dbAdapter.deleteDeleted();
+            case 8:
+                Log.d("LARRIS:DEBUG", "query to 8.");
+                return dbAdapter.deleteEmployee(Long.parseLong(selectionArgs[0]));
+            case 9:
+                Log.d("LARRIS:DEBUG", "query to 9. " + uri.getLastPathSegment());
+                return dbAdapter.deleteUpdated();
+            default:
+                break;
+        }
+        return mCursor;
     }
 
     @Override
@@ -112,6 +159,5 @@ public class ContentProviderDB extends ContentProvider {
         employee.setIdBackend(values.getAsInteger("id_backend"));
 
         return dbAdapter.updateRegistry(Long.parseLong(uri.getLastPathSegment()), employee);
-         //dbAdapter.setSent();
     }
 }

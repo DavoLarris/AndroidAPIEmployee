@@ -74,23 +74,62 @@ public class DbAdapter {
     }
 
     /**
-     * deleteEmployee
+     * deleteEmployee and add to the deleted employees, to send to the server
      *
      * @param idEmp
      * @return number of affected rows
      */
-    public int deleteEmployee(long idEmp) { //Marcar aqui que se ha borrado
-        return db.delete("employee",  "id = "
+    public int deleteEmployee(long idEmp) {
+        newDeleted(idEmp);
+        return db.delete("employee",  "_id = "
                 + idEmp, null);
     }
 
     /**
+     * Delete all the deleted ids
+     * @return
+     */
+    public int deleteDeleted() {
+        return db.delete("deleted", null, null);
+    }
+
+    /**
+     * insert new row in deleted to know which one was deleted
+     * @param id
+     */
+    private void newDeleted(long id) {
+        Cursor cursor = db.query(true, "employee", new String[]{"id_backend"}, "_id=?", new String[]{(String) id}, null, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        int id_backend = cursor.getInt(cursor.getColumnIndex("id_backend"));
+
+        ContentValues row = new ContentValues();
+        row.put("id_backend", id_backend);
+
+        db.insert("deleted", null, row);
+    }
+
+    /**
+     * @return all id_backend from deleted
+     */
+    public Cursor getDeleted() {
+        return db.query("deleted", new String[]{"id_backend"}, null, null, null, null, null);
+    }
+
+    /**
+     * @return all the updated rows inserted in updated
+     */
+    public Cursor getUpdated() {
+        return db.query("updated", new String[]{"_id", "name", "value", "abbreviation", "id_backend"}, null, null, null, null, null);
+    }
+
+    /**
      * getAll
-     *
      * @return Cursor with rows
      */
     public Cursor getAll() {
-        return db.query("employee", new String[] {"id","name","birthDate","telephone", "id_backend"}, null, null, null, null, null);
+        return db.query("employee", new String[] {"_id","name","birthDate","telephone", "id_backend"}, null, null, null, null, null);
     }
 
     /**
@@ -101,8 +140,8 @@ public class DbAdapter {
      * @throws SQLException
      */
     public Cursor getEmployee(long idEmployee) throws SQLException {
-        Cursor registry = db.query(true, "employee", new String[] { "id","name","birthDate","telephone", "id_backend"},
-                "id =" + idEmployee, null, null, null, null, null);
+        Cursor registry = db.query(true, "employee", new String[] { "_id","name","birthDate","telephone", "id_backend"},
+                "_id =" + idEmployee, null, null, null, null, null);
 
         // If found, points to the first
         if (registry != null) {
@@ -118,7 +157,7 @@ public class DbAdapter {
      * @throws SQLException
      */
     public Cursor getLastLocal() throws SQLException {
-        Cursor registry = db.query(true, "employee", new String[] { "id","name","birthDate","telephone", "id_backend"},
+        Cursor registry = db.query(true, "employee", new String[] { "_id","name","birthDate","telephone", "id_backend"},
                 "id_backend = 0"  , null, null, null, null, null);
 
         // If found, points to the first
@@ -128,12 +167,19 @@ public class DbAdapter {
         return registry;
     }
 
-    public int setSent() throws SQLException {
-        ContentValues registry = new ContentValues();
+    /**
+     * @return the last id_backend
+     * @throws SQLException
+     */
+    public Cursor getLastBackend() throws SQLException {
+        Cursor row = db.query(true, "employee", new String[]{"_id","name","birthDate","telephone", "id_backend"},
+                null, null, null, null, "id_backend DESC", " 1"); // "id_backend DESC" => orderBy   " 1" => maxRows
 
-        registry.put("id_backend", -1);
+        if (row != null) {
+            row.moveToFirst();
+        }
 
-        return db.update("employee", registry, "id_backend=0", null);
+        return row;
     }
     /**
      * getLastBackend
@@ -142,7 +188,7 @@ public class DbAdapter {
      * @throws SQLException
      */
     public Cursor getLastBackend() throws SQLException {
-        Cursor registry = db.query(true, "employee", new String[] { "id","name","birthDate","telephone", "id_backend"},
+        Cursor registry = db.query(true, "employee", new String[] { "_id","name","birthDate","telephone", "id_backend"},
                 null, null, null, null, "id_backend DESC", " 1");
 
         // If found, points to the first
@@ -160,6 +206,7 @@ public class DbAdapter {
      * @return int amount affected
      */
     public int updateRegistry(long idRegistry, Employee employee) {
+        newUpdated(id, employee);
         ContentValues registry = new ContentValues();
 
         // Agrega los datos.
@@ -169,7 +216,26 @@ public class DbAdapter {
         registry.put("id_backend", employee.getIdBackend());
 
         return db.update("employee", registry,
-                "id=" + idRegistry, null);
+                "_id=" + idRegistry, null);
     }
 
+    private long newUpdated(long id, Employee employee) {
+        ContentValues row = new ContentValues();
+        row.put("_id", id);
+        row.put("name", employee.getName());
+        row.put("telephone", employee.getTelephone());
+        row.put("birthDate", employee.getBirthDate());
+        row.put("id_backend", employee.getId_backend());
+
+
+        return db.insert("updated", null, row);
+    }
+
+    /**
+     * Delete the updated table
+     * @return
+     */
+    public int deleteUpdated() {
+        return db.delete("updated", null, null);
+    }
 }
