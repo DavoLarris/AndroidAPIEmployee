@@ -32,8 +32,8 @@ public interface EmployeeAPIClient {
     @POST("/springEmployDepart/api/new")
     Call<Void> create (@Body Employee employee);
 
-    @PUT("/springEmployDepart/api/update/{id}")
-    Call<Void> update (@Body Employee employee);
+    @PUT("/springEmployDepart/api/update/{id}") //Fix this on eclipse
+    Call<Void> update (@Body Employee employee, @Path("id") Integer id);
 
     @DELETE("/springEmployDepart/api/delete/{id}")
     Call<Void> delete (

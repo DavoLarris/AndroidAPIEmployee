@@ -19,7 +19,7 @@ public class EmployeeManager {
     private EmployeeAPIClient employeeAPIClient;
 
     /**
-     * Constructor, inits itemApiClient
+     * Constructor, inits employeeApiClient
      */
     public EmployeeManager() {
         Retrofit retrofit = new Retrofit.Builder()
@@ -65,7 +65,7 @@ public class EmployeeManager {
         try {
             employee = employeeApiCall.execute().body();
         } catch (IOException e) {
-            System.err.println("Error calling item API");
+            System.err.println("Error calling employee API");
             e.printStackTrace();
         }
 
@@ -77,18 +77,18 @@ public class EmployeeManager {
      * @param employee
      * @return
      */
-    public boolean createItem(Employee employee) {
-        Call<Void> employeeApiCall = employeeAPIClient.create(employee);//.create(item);
-        boolean result = false;
+    public Integer createEmployee(Employee employee) {
+        Call<Void> employeeApiCall = employeeAPIClient.create(employee);
+        Integer result = null;
 
         try {
-            result = employeeApiCall.execute().isSuccessful();
+            result = employeeApiCall.execute().body();
         } catch (IOException e) {
-            System.err.println("Error calling item API");
+            System.err.println("Error calling employee API");
             e.printStackTrace();
         }
 
-        return result;
+        return result.intValue();
     }
 
     /**
@@ -96,8 +96,8 @@ public class EmployeeManager {
      * @param employee
      * @return
      */
-    public boolean updateItem(Employee employee) {
-        Call<Void> employeeApiCall = employeeAPIClient.update(employee);
+    public boolean updateEmployee(Employee employee, Long id) {
+        Call<Void> employeeApiCall = employeeAPIClient.update(employee, id);
         boolean result = false;
 
         try {

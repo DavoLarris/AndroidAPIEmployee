@@ -181,23 +181,7 @@ public class DbAdapter {
 
         return row;
     }
-    /**
-     * getLastBackend
-     *
-     * @return last id in server
-     * @throws SQLException
-     */
-    public Cursor getLastBackend() throws SQLException {
-        Cursor registry = db.query(true, "employee", new String[] { "_id","name","birthDate","telephone", "id_backend"},
-                null, null, null, null, "id_backend DESC", " 1");
 
-        // If found, points to the first
-        if (registry != null) {
-            System.out.println("Register exists!");
-            registry.moveToFirst();
-        }
-        return registry;
-    }
     /**
      * updateRegistry
      *
