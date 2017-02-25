@@ -144,7 +144,7 @@ public class ContentProviderDB extends ContentProvider {
             default:
                 break;
         }
-        return mCursor;
+        return 0;
     }
 
     @Override

@@ -78,7 +78,7 @@ public class EmployeeManager {
      * @return
      */
     public Integer createEmployee(Employee employee) {
-        Call<Void> employeeApiCall = employeeAPIClient.create(employee);
+        Call<Integer> employeeApiCall = employeeAPIClient.create(employee);
         Integer result = null;
 
         try {
@@ -96,7 +96,7 @@ public class EmployeeManager {
      * @param employee
      * @return
      */
-    public boolean updateEmployee(Employee employee, Long id) {
+    public boolean updateEmployee(Employee employee, Integer id) {
         Call<Void> employeeApiCall = employeeAPIClient.update(employee, id);
         boolean result = false;
 

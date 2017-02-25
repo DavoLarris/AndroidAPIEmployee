@@ -98,7 +98,7 @@ public class DbAdapter {
      * @param id
      */
     private void newDeleted(long id) {
-        Cursor cursor = db.query(true, "employee", new String[]{"id_backend"}, "_id=?", new String[]{(String) id}, null, null, null, null);
+        Cursor cursor = db.query(true, "employee", new String[]{"id_backend"}, "_id=?", new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
         }
@@ -190,7 +190,7 @@ public class DbAdapter {
      * @return int amount affected
      */
     public int updateRegistry(long idRegistry, Employee employee) {
-        newUpdated(id, employee);
+        newUpdated(idRegistry, employee);
         ContentValues registry = new ContentValues();
 
         // Agrega los datos.
@@ -209,7 +209,7 @@ public class DbAdapter {
         row.put("name", employee.getName());
         row.put("telephone", employee.getTelephone());
         row.put("birthDate", employee.getBirthDate());
-        row.put("id_backend", employee.getId_backend());
+        row.put("id_backend", employee.getIdBackend());
 
 
         return db.insert("updated", null, row);

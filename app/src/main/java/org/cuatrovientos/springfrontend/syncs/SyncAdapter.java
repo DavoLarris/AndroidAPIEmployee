@@ -1,4 +1,4 @@
-package org.cuatrovientos.springfrontend;
+package org.cuatrovientos.springfrontend.syncs;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -11,7 +11,13 @@ import android.content.SyncResult;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.util.Log;
+
+import org.cuatrovientos.springfrontend.Interface.EmployeeManager;
+import org.cuatrovientos.springfrontend.Model.Employee;
+
+import java.util.List;
 
 /**
  * Created by David on 18/02/2017.
@@ -79,9 +85,9 @@ public class SyncAdapter  extends AbstractThreadedSyncAdapter {
                 employee.setName(cursor.getString(cursor.getColumnIndex("name")));
                 employee.setTelephone(cursor.getString(cursor.getColumnIndex("telephone")));
                 employee.setBirthDate(cursor.getString(cursor.getColumnIndex("birthDate")));
-                employee.setId_backend(cursor.getInt(cursor.getColumnIndex("id_backend")));
+                employee.setIdBackend(cursor.getInt(cursor.getColumnIndex("id_backend")));
 
-                employeeManager.updateEmployee(employee, employee.getId_backend());
+                employeeManager.updateEmployee(employee, employee.getIdBackend());
                 cursor.moveToNext();
             }
         }
@@ -115,11 +121,11 @@ public class SyncAdapter  extends AbstractThreadedSyncAdapter {
 
         if (cursor.getCount() > 0) {
             lastBackendId = cursor.getInt(cursor.getColumnIndex("id_backend"));
-            Log.d("LARRIS:DEBUG", "Last backend Id:" + lastBackendId));
+            Log.d("LARRIS:DEBUG", "Last backend Id:" + lastBackendId);
         }
 
         // Get employees from server
-        List<Employee> employees = employeeManager.getEmployeess(); //SI descarga todos y no borra los que esta, hay que hacer getLastFromId(id)
+        List<Employee> employees = employeeManager.getEmployees(); //SI descarga todos y no borra los que esta, hay que hacer getLastFromId(id)
 
         for (Employee employee : employees) {
             ContentValues contentValues = new ContentValues();
@@ -149,7 +155,7 @@ public class SyncAdapter  extends AbstractThreadedSyncAdapter {
             while (cursor.isAfterLast() == false) {
                 Employee employee = new Employee();
                 employee.setName(cursor.getString(cursor.getColumnIndex("name")));
-                employee.setTelephone(cursor.getInt(cursor.getColumnIndex("telephone")));
+                employee.setTelephone(cursor.getString(cursor.getColumnIndex("telephone")));
                 employee.setBirthDate(cursor.getString(cursor.getColumnIndex("birthDate")));
 
                 int id = employeeManager.createEmployee(employee);

@@ -31,6 +31,17 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/accountauth" />
         </service>
+        <service
+            android:name=".syncs.syncService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter" />
+        </service>
     </application>
 
 </manifest>

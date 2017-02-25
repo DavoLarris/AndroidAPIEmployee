@@ -30,7 +30,7 @@ public interface EmployeeAPIClient {
 
     @Headers("Accept: application/json")
     @POST("/springEmployDepart/api/new")
-    Call<Void> create (@Body Employee employee);
+    Call<Integer> create (@Body Employee employee);
 
     @PUT("/springEmployDepart/api/update/{id}") //Fix this on eclipse
     Call<Void> update (@Body Employee employee, @Path("id") Integer id);
