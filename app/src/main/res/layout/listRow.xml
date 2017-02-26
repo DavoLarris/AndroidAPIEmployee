@@ -13,7 +13,7 @@
             android:orientation="vertical" >
 
                 <LinearLayout
-                    android:id="@+id/single_post_circuito_linearbox"
+                    android:id="@+id/single_post_linearbox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
@@ -24,39 +24,55 @@
                         android:orientation="vertical"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.3">
+                        android:layout_weight="0.15">
 
-                        <ImageView
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="80dp"
-                            android:id="@+id/imagen_single_post_circuito"
-                            android:src="@drawable/circuitochico_plaza"
-                            android:scaleType="centerCrop" />
+                            android:id="@+id/idId"
+                            android:text="1"
+                            android:gravity="center"
+                            android:textColor="#ff000000"
+                            android:textSize="30dp"/>
                     </LinearLayout>
 
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.7">
+                        android:layout_weight="0.69">
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:textAppearance="?android:attr/textAppearanceLarge"
+                                android:text="David Larrea"
+                                android:id="@+id/name"
+                                android:layout_marginLeft="5dp"
+                                android:textColor="#ff000000" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:textAppearance="?android:attr/textAppearanceLarge"
+                                android:text="21-06-1995"
+                                android:id="@+id/birthDate"
+                                android:gravity="right"
+                                android:layout_marginLeft="5dp"
+                                android:textColor="#ff000000" />
+                        </LinearLayout>
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:text="Plaza 25 de Mayo"
-                            android:id="@+id/tv_titulo_single_post_circuito"
-                            android:layout_marginLeft="5dp"
-                            android:textColor="#ff000000" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:text="Es la plaza principal de la ciudad de San Juan y es donde se encuentra el kilómetro 0 de la provincia."
-                            android:id="@+id/tv_contenido_single_post_circuito"
+                            android:text="948178472"
+                            android:id="@+id/telephone"
                             android:layout_marginLeft="5dp"
-                            android:textColor="#ff868686" />
+                            android:gravity="center"
+                            android:textColor="#ff000000" />
 
                     </LinearLayout>
 

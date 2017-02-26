@@ -1,5 +1,8 @@
 package org.cuatrovientos.springfrontend.Interface;
 
+import android.os.Debug;
+import android.util.Log;
+
 import org.cuatrovientos.springfrontend.Model.Employee;
 
 import java.io.IOException;
@@ -14,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class EmployeeManager {
-    private static final String URLAPI = "myemployee.ddns.net:8080/springEmployDepart";
+    private static final String URLAPI = "http://myemployee.ddns.net:8080";
 
     private EmployeeAPIClient employeeAPIClient;
 
@@ -36,10 +39,10 @@ public class EmployeeManager {
     public List<Employee> getEmployees() {
         Call<List<Employee>> employeesApiCall = employeeAPIClient.employees();
         List<Employee> employees = null;
-
+        Log.d("LARRIS:DEBUG", "employees = null");
         try {
             employees = employeesApiCall.execute().body();
-
+            Log.d("LARRIS:DEBUG", "employees " + employees.toString());
         } catch (IOException e) {
             System.err.println("Error calling employees API");
             e.printStackTrace();

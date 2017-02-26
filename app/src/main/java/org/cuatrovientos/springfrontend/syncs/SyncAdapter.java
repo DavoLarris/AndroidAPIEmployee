@@ -31,6 +31,7 @@ public class SyncAdapter  extends AbstractThreadedSyncAdapter {
 
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
+        employeeManager = new EmployeeManager();
         mAccountManager = AccountManager.get(context);
         contentResolver = context.getContentResolver();
     }
@@ -55,13 +56,13 @@ public class SyncAdapter  extends AbstractThreadedSyncAdapter {
 
         try {
 
-            updateOnBackend(cursor, provider);
-
-            deleteFromUpdated(provider);
-
             deleteOnBackend(cursor, provider);
 
             deleteFromDeleted(provider);
+
+            updateOnBackend(cursor, provider);
+
+            deleteFromUpdated(provider);
 
             updateFromBackend(cursor, provider);
 

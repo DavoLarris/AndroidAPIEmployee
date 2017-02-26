@@ -121,7 +121,7 @@ public class DbAdapter {
      * @return all the updated rows inserted in updated
      */
     public Cursor getUpdated() {
-        return db.query("updated", new String[]{"_id", "name", "value", "abbreviation", "id_backend"}, null, null, null, null, null);
+        return db.query("updated", new String[]{"_id", "name", "birthDate", "telephone", "id_backend"}, null, null, null, null, null);
     }
 
     /**

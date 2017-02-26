@@ -81,7 +81,7 @@ public class ContentProviderDB extends ContentProvider {
 
     @Override           //uri           columns             where            paramsToWhere          order
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        Log.d("LARRIS:DEBUG", "ContentProvider > query \" + uri");
+        Log.d("LARRIS:DEBUG", "ContentProvider > query " + uri);
         switch (uriMatcher.match(uri)) {
             case 1:
                 Log.d("LARRIS:DEBUG", "query to 1.");

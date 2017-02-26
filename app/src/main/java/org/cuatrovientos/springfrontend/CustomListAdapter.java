@@ -22,7 +22,7 @@ public class CustomListAdapter extends CursorAdapter{
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.listRow, parent, false);
+        return LayoutInflater.from(context).inflate(R.layout.listrow, parent, false);
     }
 
     @Override
@@ -31,19 +31,19 @@ public class CustomListAdapter extends CursorAdapter{
 
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = inflater.inflate(R.layout.listRow, null);
+            v = inflater.inflate(R.layout.listrow, null);
         }
 
         TextView textViewId = (TextView) v.findViewById(R.id.idId);
         textViewId.setText(String.valueOf(cursor.getInt(cursor.getColumnIndex("_id"))));
 
-        TextView textViewName = (TextView) v.findViewById(R.id.idName);
+        TextView textViewName = (TextView) v.findViewById(R.id.name);
         textViewName.setText(cursor.getString(cursor.getColumnIndex("name")));
 
-        TextView textViewAbb = (TextView) v.findViewById(R.id.idBirthDate);
+        TextView textViewAbb = (TextView) v.findViewById(R.id.birthDate);
         textViewAbb.setText(cursor.getString(cursor.getColumnIndex("birthDate")));
 
-        TextView textViewValue = (TextView) v.findViewById(R.id.idTelephone);
+        TextView textViewValue = (TextView) v.findViewById(R.id.telephone);
         textViewValue.setText(cursor.getString(cursor.getColumnIndex("telephone")));
     }
 }
