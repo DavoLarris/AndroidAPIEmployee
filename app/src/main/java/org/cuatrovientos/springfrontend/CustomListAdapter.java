@@ -34,16 +34,16 @@ public class CustomListAdapter extends CursorAdapter{
             v = inflater.inflate(R.layout.listrow, null);
         }
 
-        TextView textViewId = (TextView) v.findViewById(R.id.idId);
-        textViewId.setText(String.valueOf(cursor.getInt(cursor.getColumnIndex("_id"))));
+        //TextView textViewId = (TextView) v.findViewById(R.id.idId);
+        //textViewId.setText(String.valueOf(cursor.getInt(cursor.getColumnIndex("_id"))));
 
         TextView textViewName = (TextView) v.findViewById(R.id.name);
         textViewName.setText(cursor.getString(cursor.getColumnIndex("name")));
 
-        TextView textViewAbb = (TextView) v.findViewById(R.id.birthDate);
-        textViewAbb.setText(cursor.getString(cursor.getColumnIndex("birthDate")));
+        //TextView textViewBD = (TextView) v.findViewById(R.id.birthDate);
+        //textViewBD.setText(cursor.getString(cursor.getColumnIndex("birthDate")));
 
-        TextView textViewValue = (TextView) v.findViewById(R.id.telephone);
-        textViewValue.setText(cursor.getString(cursor.getColumnIndex("telephone")));
+        TextView textViewTel = (TextView) v.findViewById(R.id.telephone);
+        textViewTel.setText(cursor.getString(cursor.getColumnIndex("telephone")));
     }
 }

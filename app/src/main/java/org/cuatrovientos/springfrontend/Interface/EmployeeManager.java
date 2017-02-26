@@ -54,7 +54,19 @@ public class EmployeeManager {
         return employees;
     }
 
+    public List<Employee> getLastEmployees(Integer id) {
+        Call<List<Employee>> employeeApiCall = employeeAPIClient.lastEmployees(id);
+        List<Employee> employees = null;
 
+        try {
+            employees = employeeApiCall.execute().body();
+        } catch (IOException e) {
+            System.err.println("Error calling employees API");
+            e.printStackTrace();
+        }
+
+        return employees;
+    }
 
     /**
      * uses retrofit API client to get one employee by id

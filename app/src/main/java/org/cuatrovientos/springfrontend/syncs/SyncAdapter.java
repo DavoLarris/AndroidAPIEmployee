@@ -126,7 +126,7 @@ public class SyncAdapter  extends AbstractThreadedSyncAdapter {
         }
 
         // Get employees from server
-        List<Employee> employees = employeeManager.getEmployees(); //SI descarga todos y no borra los que esta, hay que hacer getLastFromId(id)
+        List<Employee> employees = employeeManager.getLastEmployees(lastBackendId); //Si descarga todos y no borra los que esta, hay que hacer getLastFromId(id)
 
         for (Employee employee : employees) {
             ContentValues contentValues = new ContentValues();

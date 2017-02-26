@@ -1,6 +1,7 @@
 package org.cuatrovientos.springfrontend.DB;
 
 import android.content.ContentProvider;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
@@ -26,9 +27,8 @@ import java.util.Date;
 
 public class ContentProviderDB extends ContentProvider {
     private UriMatcher uriMatcher;
-
-    private MatrixCursor mCursor = null;
     private DbAdapter dbAdapter;
+    private MatrixCursor mCursor;
 
     @Override
     public boolean onCreate() {
@@ -48,7 +48,7 @@ public class ContentProviderDB extends ContentProvider {
 
         // Get all : GET
         // This will match: content://org.cuatrovientos.springfrontend.sqlcommand/employees
-        uriMatcher.addURI("org.cuatrovientos.springfrontend.sqlcommand", "employees/", 1);
+        uriMatcher.addURI("org.cuatrovientos.springfrontend.sqlcommand", "employees", 1);
 
         // Get one : GET
         // This will match: content://org.cuatrovientos.springfrontend.sqlcommand/employees/{id}
@@ -82,25 +82,38 @@ public class ContentProviderDB extends ContentProvider {
     @Override           //uri           columns             where            paramsToWhere          order
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         Log.d("LARRIS:DEBUG", "ContentProvider > query " + uri);
+        ContentResolver cr = getContext().getContentResolver();
+        Cursor myCursor;
+
         switch (uriMatcher.match(uri)) {
             case 1:
                 Log.d("LARRIS:DEBUG", "query to 1.");
-                return dbAdapter.getAll();
+                myCursor = dbAdapter.getAll();
+                myCursor.setNotificationUri(cr, uri);
+                return myCursor;
             case 2:
                 Log.d("LARRIS:DEBUG", "query to 2.");
                 return dbAdapter.getEmployee(Long.parseLong(uri.getLastPathSegment()));
             case 3:
                 Log.d("LARRIS:DEBUG", "query to 3. " + uri.getLastPathSegment());
-                return dbAdapter.getLastBackend();
+                myCursor = dbAdapter.getLastBackend();
+                myCursor.setNotificationUri(cr, uri);
+                return myCursor;
             case 4:
                 Log.d("LARRIS:DEBUG", "query to 4. " + uri.getLastPathSegment());
-                return dbAdapter.getLastLocal();
+                myCursor = dbAdapter.getLastLocal();
+                myCursor.setNotificationUri(cr, uri);
+                return myCursor;
             case 5:
                 Log.d("LARRIS:DEBUG", "query to 5. " + uri.getLastPathSegment());
-                return dbAdapter.getDeleted();
+                myCursor = dbAdapter.getDeleted();
+                myCursor.setNotificationUri(cr, uri);
+                return myCursor;
             case 6:
                 Log.d("LARRIS:DEBUG", "query to 6. " + uri.getLastPathSegment());
-                return dbAdapter.getUpdated();
+                myCursor = dbAdapter.getUpdated();
+                myCursor.setNotificationUri(cr, uri);
+                return myCursor;
             default:
                 break;
         }

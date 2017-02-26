@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Toast.makeText(MainActivity.this, "Done!", Toast.LENGTH_LONG).show();
         //Snackbar.make(view, "Done!", Snackbar.LENGTH_SHORT).show();
         swipeRefreshLayout.setRefreshing(false);
+        customizedListAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -122,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 null,                        // Selection criteria parameters
                 null,                     // Selection criteria values
                 null);                            // The sort order for the returned rows
+
     }
 
     @Override
@@ -129,7 +131,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         // Swap the new cursor in.  (The framework will take care of closing the
         // old cursor once we return.)
         customizedListAdapter.swapCursor(cursor);
-
         cursor.moveToFirst();
         String data = "";
         while (!cursor.isAfterLast()) {

@@ -129,6 +129,7 @@ public class DbAdapter {
      * @return Cursor with rows
      */
     public Cursor getAll() {
+        Log.d("LARRIS:DEBUG", "I'm in getAll()");
         return db.query("employee", new String[] {"_id","name","birthDate","telephone", "id_backend"}, null, null, null, null, null);
     }
 

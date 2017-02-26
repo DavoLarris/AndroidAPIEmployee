@@ -24,6 +24,11 @@ public interface EmployeeAPIClient {
     Call<List<Employee>> employees ();
 
     @Headers("Accept: application/json")
+    @GET("/springEmployDepart/api/last/{id}")
+    Call<List<Employee>> lastEmployees(
+            @Path("id") Integer id);
+
+    @Headers("Accept: application/json")
     @GET("/springEmployDepart/api/{id}")
     Call<Employee> employee (
             @Path("id") int id);
