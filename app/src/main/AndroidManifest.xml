@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -20,11 +21,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" android:theme="@style/AppTheme.NoActionBar"></activity>
-        <provider android:name=".DB.ContentProviderDB"
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".addActivity"
+            android:parentActivityName=".MainActivity" ></activity>
+
+        <provider
+            android:name=".DB.ContentProviderDB"
             android:authorities="org.cuatrovientos.springfrontend.sqlcommand">
             <uses-permission android:name="org.cuatrovientos.springfrontend.sqlcommand.READ" />
         </provider>
+
         <service
             android:name=".authority.AuthenticatorService"
             android:exported="true">

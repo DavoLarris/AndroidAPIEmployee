@@ -12,16 +12,12 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.ContextMenu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.cuatrovientos.springfrontend.authority.Authenticator;
 
@@ -44,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         // Prepare the loader.  Either re-connect with an existing one,
         // or start a new one.
+
         getLoaderManager().initLoader(0, null, this);
 
         account = CreateSyncAccount(this);
@@ -63,8 +60,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(MainActivity.this, newEmployee.class);
-                //startActivity(intent);
+                Intent intent = new Intent(MainActivity.this, addActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -73,9 +70,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        Toast.makeText(MainActivity.this, "Refreshing...", Toast.LENGTH_LONG).show();
-                        //Snackbar.make(null, "Refreshing...", Snackbar.LENGTH_SHORT).show();
-                        MainActivity.this.syncNow(null);
+                        MainActivity.this.syncNow(getWindow().getDecorView().getRootView());
                     }
                 }
         );
@@ -101,10 +96,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         contentResolver.requestSync(account, "org.cuatrovientos.springfrontend.sqlcommand", bundle);
 
         // Stop refresh effect
-        Toast.makeText(MainActivity.this, "Done!", Toast.LENGTH_LONG).show();
-        //Snackbar.make(view, "Done!", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(view, "Done!", Snackbar.LENGTH_LONG).show();
         swipeRefreshLayout.setRefreshing(false);
-        customizedListAdapter.notifyDataSetChanged();
+
+        getLoaderManager().restartLoader(0, null, this);
     }
 
     @Override
