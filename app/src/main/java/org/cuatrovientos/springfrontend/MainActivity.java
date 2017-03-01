@@ -17,9 +17,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import org.cuatrovientos.springfrontend.Model.Employee;
 import org.cuatrovientos.springfrontend.authority.Authenticator;
+
+import java.io.Serializable;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 

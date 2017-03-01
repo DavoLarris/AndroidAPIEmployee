@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.ToggleButton;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -84,9 +85,18 @@ public class addActivity extends AppCompatActivity implements View.OnClickListen
         if (name.getText() != null || date.getText() != null || telephone.getText() != null){
             ContentValues contentValues = new ContentValues();
             Uri uri = Uri.parse(myUri);
+            SimpleDateFormat iso8601Format = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+
+            Date datee = null;
+            try {
+                datee = iso8601Format.parse(date.getText().toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            String dateeee = iso8601Format.format(datee);
 
             contentValues.put("name", String.valueOf(name.getText()));
-            contentValues.put("birthDate", String.valueOf(date.getText()));
+            contentValues.put("birthDate", dateeee);
             contentValues.put("telephone", Integer.valueOf(String.valueOf(telephone.getText())));
 
 
