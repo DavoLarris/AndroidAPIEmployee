@@ -22,7 +22,7 @@ public class CustomListAdapter extends CursorAdapter{
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.listrow, parent, false);
+        return LayoutInflater.from(context).inflate(R.layout.list_row, parent, false);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class CustomListAdapter extends CursorAdapter{
 
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = inflater.inflate(R.layout.listrow, null);
+            v = inflater.inflate(R.layout.list_row, null);
         }
 
         //TextView textViewId = (TextView) v.findViewById(R.id.idId);
