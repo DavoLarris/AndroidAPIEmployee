@@ -89,6 +89,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         listView.setAdapter(customizedListAdapter);
 
         registerForContextMenu(listView);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Intent myIntent = new Intent(MainActivity.this, DetailActivity.class);
+                myIntent.putExtra("employee", (Serializable) view);
+                startActivity(myIntent);
+            }
+        });
     }
 
     public void syncNow(View view) {

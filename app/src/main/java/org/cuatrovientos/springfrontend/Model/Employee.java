@@ -1,12 +1,12 @@
 package org.cuatrovientos.springfrontend.Model;
 
-import java.util.Date;
+import java.io.Serializable;
 
 /**
  * Created by David on 14/02/2017.
  */
 
-public class Employee {
+public class Employee implements Serializable{
     private Integer id;
     private String name;
     private String birthDate;
