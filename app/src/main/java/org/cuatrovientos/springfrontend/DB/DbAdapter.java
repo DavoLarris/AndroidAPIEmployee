@@ -98,7 +98,7 @@ public class DbAdapter {
      * @param id
      */
     private void newDeleted(long id) {
-        Cursor cursor = db.query(true, "employee", new String[]{"id_backend"}, "_id=?", new String[]{String.valueOf(id)}, null, null, null, null);
+        Cursor cursor = db.query(true, "employee", null, "_id=?", new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
         }

@@ -16,14 +16,21 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.cuatrovientos.springfrontend.Model.Employee;
 import org.cuatrovientos.springfrontend.authority.Authenticator;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -33,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private SwipeRefreshLayout swipeRefreshLayout;
     private ContentResolver contentResolver;
     private Account account;
+    private ArrayList<Long> employeesSelected = new ArrayList<Long>();
+    private int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,15 +96,54 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         listView = (ListView) findViewById(R.id.listView);
 
         listView.setAdapter(customizedListAdapter);
-
         registerForContextMenu(listView);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+
+        listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Intent myIntent = new Intent(MainActivity.this, DetailActivity.class);
-                myIntent.putExtra("employee", (Serializable) view);
-                startActivity(myIntent);
+            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+                count = count+1;
+                mode.setTitle(count + " items selected");
+                employeesSelected.add(id);
+            }
+
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                MenuInflater inflater = mode.getMenuInflater();
+                inflater.inflate(R.menu.my_context_menu, menu);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.delete_id:
+                        for (int i = 0; i<employeesSelected.size(); i++){
+                            getContentResolver().delete(
+                                    Uri.parse(contentUri + "/delete/employees"),
+                                    null,
+                                    new String[]{String.valueOf(employeesSelected.get(i))}
+                        );
+                        }
+                        Toast.makeText(getBaseContext(), "Deleted", Toast.LENGTH_SHORT);
+                        count = 0;
+                        employeesSelected = null;
+                        mode.finish();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+
             }
         });
     }

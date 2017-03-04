@@ -28,9 +28,6 @@
         <activity android:name=".addActivity"
             android:parentActivityName=".MainActivity" ></activity>
 
-        <activity android:name=".DetailActivity"
-            android:parentActivityName=".MainActivity" />
-
         <provider
             android:name=".DB.ContentProviderDB"
             android:authorities="org.cuatrovientos.springfrontend.sqlcommand">
