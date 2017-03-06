@@ -159,7 +159,7 @@ public class DbAdapter {
      */
     public Cursor getLastLocal() throws SQLException {
         Cursor registry = db.query(true, "employee", new String[] { "_id","name","birthDate","telephone", "id_backend"},
-                "id_backend = 0"  , null, null, null, null, null);
+                "id_backend"  , new String[] {"0"}, null, null, null, null);
 
         // If found, points to the first
         if (registry != null) {

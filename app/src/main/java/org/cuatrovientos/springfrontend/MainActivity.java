@@ -35,6 +35,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private ListView listView;
+    private Toolbar toolbar;
     private String contentUri = "content://org.cuatrovientos.springfrontend.sqlcommand";
     private CustomListAdapter customizedListAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -43,11 +44,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private ArrayList<Long> employeesSelected = new ArrayList<Long>();
     private int count = 0;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
         setupCustomList(null);
 
@@ -112,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
                 MenuInflater inflater = mode.getMenuInflater();
                 inflater.inflate(R.menu.my_context_menu, menu);
+                toolbar.setVisibility(View.GONE);
                 return true;
             }
 
@@ -133,8 +137,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                         }
                         Toast.makeText(getBaseContext(), "Deleted", Toast.LENGTH_SHORT);
                         count = 0;
-                        employeesSelected = null;
+                        employeesSelected = new ArrayList<Long>();
                         mode.finish();
+                        toolbar.setVisibility(View.VISIBLE);
                         return true;
                     default:
                         return false;
@@ -143,7 +148,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
-
+                count = 0;
+                employeesSelected = new ArrayList<Long>();
+                toolbar.setVisibility(View.VISIBLE);
             }
         });
     }
