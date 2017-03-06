@@ -16,12 +16,14 @@ import android.util.Log;
 import org.cuatrovientos.springfrontend.Model.Employee;
 
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class DbAdapter {
 
     private SQLiteDatabase db;
     private SQLiteHelper dbHelper;
     private final Context context;
+    private java.text.SimpleDateFormat iso8601Format = new java.text.SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
 
     /**
      * DbAdapter
@@ -66,7 +68,10 @@ public class DbAdapter {
         // Agrega los datos.
         registro.put("name", employee.getName());
         registro.put("telephone", employee.getTelephone());
-        registro.put("birthDate", employee.getBirthDate());
+
+        String dateeee = iso8601Format.format(employee.getBirthDate());
+        registro.put("birthDate", dateeee);
+
         registro.put("id_backend", employee.getIdBackend());
 
         // Inserta el registro y devuelve el resultado.
@@ -159,7 +164,7 @@ public class DbAdapter {
      */
     public Cursor getLastLocal() throws SQLException {
         Cursor registry = db.query(true, "employee", new String[] { "_id","name","birthDate","telephone", "id_backend"},
-                "id_backend"  , new String[] {"0"}, null, null, null, null);
+                "id_backend=?"  , new String[] {"0"}, null, null, null, null);
 
         // If found, points to the first
         if (registry != null) {
@@ -197,7 +202,10 @@ public class DbAdapter {
         // Agrega los datos.
         registry.put("name", employee.getName());
         registry.put("telephone", employee.getTelephone());
-        registry.put("birthDate", employee.getBirthDate());
+
+        String dateeee = iso8601Format.format(employee.getBirthDate());
+        registry.put("birthDate", dateeee
+        );
         registry.put("id_backend", employee.getIdBackend());
 
         return db.update("employee", registry,
@@ -209,7 +217,9 @@ public class DbAdapter {
         row.put("_id", id);
         row.put("name", employee.getName());
         row.put("telephone", employee.getTelephone());
-        row.put("birthDate", employee.getBirthDate());
+
+        String dateeee = iso8601Format.format(employee.getBirthDate());
+        row.put("birthDate", dateeee);
         row.put("id_backend", employee.getIdBackend());
 
 

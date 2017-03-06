@@ -18,8 +18,10 @@ import org.cuatrovientos.springfrontend.Model.Employee;
 
 import java.text.FieldPosition;
 import java.text.Format;
+import java.text.ParseException;
 import java.text.ParsePosition;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by David on 18/02/2017.
@@ -29,6 +31,7 @@ public class ContentProviderDB extends ContentProvider {
     private UriMatcher uriMatcher;
     private DbAdapter dbAdapter;
     private MatrixCursor mCursor;
+    private java.text.SimpleDateFormat iso8601Format = new java.text.SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
 
     @Override
     public boolean onCreate() {
@@ -133,7 +136,16 @@ public class ContentProviderDB extends ContentProvider {
         employee.setId(values.getAsInteger("id"));
         employee.setName(values.getAsString("name"));
         employee.setTelephone(values.getAsString("telephone"));
-        employee.setBirthDate(values.getAsString("birthDate"));
+
+
+        Date datee = null;
+        try {
+            datee = iso8601Format.parse(values.getAsString("birthDate"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        employee.setBirthDate(datee);
         employee.setIdBackend(values.getAsInteger("id_backend"));
 
         Long id = dbAdapter.insertEmployee(employee);
@@ -168,7 +180,14 @@ public class ContentProviderDB extends ContentProvider {
         employee.setId(values.getAsInteger("id"));
         employee.setName(values.getAsString("name"));
         employee.setTelephone(values.getAsString("telephone"));
-        employee.setBirthDate(values.getAsString("birthDate"));
+
+        Date datee = null;
+        try {
+            datee = iso8601Format.parse(values.getAsString("birthDate"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        employee.setBirthDate(datee);
         employee.setIdBackend(values.getAsInteger("id_backend"));
 
         return dbAdapter.updateRegistry(Long.parseLong(uri.getLastPathSegment()), employee);
