@@ -1,6 +1,7 @@
 package org.cuatrovientos.springfrontend.Model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by David on 14/02/2017.
@@ -9,7 +10,7 @@ import java.io.Serializable;
 public class Employee implements Serializable{
     private Integer id;
     private String name;
-    private String birthDate;
+    private Date birthDate;
     private String telephone;
     private Integer idBackend;
 
@@ -23,7 +24,7 @@ public class Employee implements Serializable{
      * @param birthDate
      * @param telephone
      */
-    public Employee(String name, String birthDate, String telephone, Integer idBackend) {
+    public Employee(String name, Date birthDate, String telephone, Integer idBackend) {
         this.name = name;
         this.birthDate = birthDate;
         this.telephone = telephone;
@@ -46,11 +47,11 @@ public class Employee implements Serializable{
         this.name = name;
     }
 
-    public String getBirthDate() {
+    public Date getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(String birthDate) {
+    public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
 

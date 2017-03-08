@@ -31,7 +31,7 @@ public class SyncAdapter  extends AbstractThreadedSyncAdapter {
     private ContentResolver contentResolver;
     private EmployeeManager employeeManager;
     private String contentUri = "content://org.cuatrovientos.springfrontend.sqlcommand";
-    private java.text.SimpleDateFormat iso8601Format = new java.text.SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+    private java.text.SimpleDateFormat iso8601Format = new java.text.SimpleDateFormat("yyyy-MM-dd");
 
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
@@ -81,6 +81,7 @@ public class SyncAdapter  extends AbstractThreadedSyncAdapter {
     private void updateOnBackend(Cursor cursor, ContentProviderClient provider) throws RemoteException {
         //provider.query(uri, columns, where, whereArgs, order);
         cursor = provider.query(Uri.parse(contentUri + "/updated"), null, null, null, null);
+        Date date = null;
 
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
@@ -89,7 +90,12 @@ public class SyncAdapter  extends AbstractThreadedSyncAdapter {
                 employee.setId(cursor.getInt(cursor.getColumnIndex("_id")));
                 employee.setName(cursor.getString(cursor.getColumnIndex("name")));
                 employee.setTelephone(cursor.getString(cursor.getColumnIndex("telephone")));
-                employee.setBirthDate(cursor.getString(cursor.getColumnIndex("birthDate")));
+                try {
+                    date = iso8601Format.parse(cursor.getString(cursor.getColumnIndex("birthDate")));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                employee.setBirthDate(date);
                 employee.setIdBackend(cursor.getInt(cursor.getColumnIndex("id_backend")));
 
                 employeeManager.updateEmployee(employee, employee.getIdBackend());
@@ -149,22 +155,26 @@ public class SyncAdapter  extends AbstractThreadedSyncAdapter {
     }
 
     private void fromLocalToBackend(Cursor cursor, ContentProviderClient provider) throws RemoteException {
-        int lastLocalId = 0;
         ContentValues contentValues = null;
 
         // get all local record with id_backend = 0 and send them to backend
         cursor = provider.query(Uri.parse(contentUri + "/employees/lastlocal"), null, null, null, null);
         if (cursor.getCount() > 0) {
-            lastLocalId = cursor.getInt(0);
             Log.d("LARRIS:DEBUG", "Last local Id: " + cursor.getString(0));
 
             cursor.moveToFirst();
+            Date date = null;
 
             while (cursor.isAfterLast() == false) {
                 Employee employee = new Employee();
                 employee.setName(cursor.getString(cursor.getColumnIndex("name")));
                 employee.setTelephone(cursor.getString(cursor.getColumnIndex("telephone")));
-                employee.setBirthDate(cursor.getString(cursor.getColumnIndex("birthDate")));
+                try {
+                    date = iso8601Format.parse(cursor.getString(cursor.getColumnIndex("birthDate")));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                employee.setBirthDate(date);
 
                 int id = employeeManager.createEmployee(employee);
                 contentValues = new ContentValues();

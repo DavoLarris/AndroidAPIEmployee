@@ -31,7 +31,7 @@ public class ContentProviderDB extends ContentProvider {
     private UriMatcher uriMatcher;
     private DbAdapter dbAdapter;
     private MatrixCursor mCursor;
-    private java.text.SimpleDateFormat iso8601Format = new java.text.SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+    private java.text.SimpleDateFormat iso8601Format = new java.text.SimpleDateFormat("yyyy-MM-dd");
 
     @Override
     public boolean onCreate() {
@@ -131,12 +131,18 @@ public class ContentProviderDB extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         Log.d("LARRIS:DEBUG", "ContentProvider > insert " + uri);
+        Date date = null;
 
         Employee employee = new Employee();
         employee.setId(values.getAsInteger("id"));
         employee.setName(values.getAsString("name"));
         employee.setTelephone(values.getAsString("telephone"));
-        employee.setBirthDate(values.getAsString("birthDate"));
+        try {
+            date = iso8601Format.parse(values.getAsString("birthDate"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        employee.setBirthDate(date);
         employee.setIdBackend(values.getAsInteger("id_backend"));
 
         Long id = dbAdapter.insertEmployee(employee);
@@ -166,12 +172,19 @@ public class ContentProviderDB extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         Log.d("LARRIS:DEBUG", "ContentProvider > " + uri);
+        Date date = null;
 
         Employee employee = new Employee();
         employee.setId(values.getAsInteger("id"));
         employee.setName(values.getAsString("name"));
         employee.setTelephone(values.getAsString("telephone"));
-        employee.setBirthDate(values.getAsString("birthDate"));
+
+        try {
+            date = iso8601Format.parse(values.getAsString("birthDate"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        employee.setBirthDate(date);
         employee.setIdBackend(values.getAsInteger("id_backend"));
 
         return dbAdapter.updateRegistry(Long.parseLong(uri.getLastPathSegment()), employee);
