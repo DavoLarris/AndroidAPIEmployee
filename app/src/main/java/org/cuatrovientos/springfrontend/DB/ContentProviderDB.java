@@ -136,16 +136,7 @@ public class ContentProviderDB extends ContentProvider {
         employee.setId(values.getAsInteger("id"));
         employee.setName(values.getAsString("name"));
         employee.setTelephone(values.getAsString("telephone"));
-
-
-        Date datee = null;
-        try {
-            datee = iso8601Format.parse(values.getAsString("birthDate"));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        employee.setBirthDate(datee);
+        employee.setBirthDate(values.getAsString("birthDate"));
         employee.setIdBackend(values.getAsInteger("id_backend"));
 
         Long id = dbAdapter.insertEmployee(employee);
@@ -180,14 +171,7 @@ public class ContentProviderDB extends ContentProvider {
         employee.setId(values.getAsInteger("id"));
         employee.setName(values.getAsString("name"));
         employee.setTelephone(values.getAsString("telephone"));
-
-        Date datee = null;
-        try {
-            datee = iso8601Format.parse(values.getAsString("birthDate"));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        employee.setBirthDate(datee);
+        employee.setBirthDate(values.getAsString("birthDate"));
         employee.setIdBackend(values.getAsInteger("id_backend"));
 
         return dbAdapter.updateRegistry(Long.parseLong(uri.getLastPathSegment()), employee);

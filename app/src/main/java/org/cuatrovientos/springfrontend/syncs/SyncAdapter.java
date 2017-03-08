@@ -89,15 +89,7 @@ public class SyncAdapter  extends AbstractThreadedSyncAdapter {
                 employee.setId(cursor.getInt(cursor.getColumnIndex("_id")));
                 employee.setName(cursor.getString(cursor.getColumnIndex("name")));
                 employee.setTelephone(cursor.getString(cursor.getColumnIndex("telephone")));
-
-                Date datee = null;
-                try {
-                    datee = iso8601Format.parse(cursor.getString(cursor.getColumnIndex("birthDate")));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-                employee.setBirthDate(datee);
+                employee.setBirthDate(cursor.getString(cursor.getColumnIndex("birthDate")));
                 employee.setIdBackend(cursor.getInt(cursor.getColumnIndex("id_backend")));
 
                 employeeManager.updateEmployee(employee, employee.getIdBackend());
@@ -172,14 +164,7 @@ public class SyncAdapter  extends AbstractThreadedSyncAdapter {
                 Employee employee = new Employee();
                 employee.setName(cursor.getString(cursor.getColumnIndex("name")));
                 employee.setTelephone(cursor.getString(cursor.getColumnIndex("telephone")));
-                Date datee = null;
-                try {
-                    datee = iso8601Format.parse(cursor.getString(cursor.getColumnIndex("birthDate")));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-                employee.setBirthDate(datee);
+                employee.setBirthDate(cursor.getString(cursor.getColumnIndex("birthDate")));
 
                 int id = employeeManager.createEmployee(employee);
                 contentValues = new ContentValues();

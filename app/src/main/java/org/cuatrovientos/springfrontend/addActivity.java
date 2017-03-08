@@ -85,11 +85,11 @@ public class addActivity extends AppCompatActivity implements View.OnClickListen
         if (name.getText() != null || date.getText() != null || telephone.getText() != null){
             ContentValues contentValues = new ContentValues();
             Uri uri = Uri.parse(myUri);
-            SimpleDateFormat iso8601Format = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+            SimpleDateFormat iso8601Format = new SimpleDateFormat("dd-MM-yyyy");
 
             Date datee = null;
             try {
-                datee = iso8601Format.parse(date.getText().toString());
+                datee = iso8601Format.parse(date.getText().toString()); //Mirar esto que valor toma pa poner directamente getText sino
             } catch (ParseException e) {
                 e.printStackTrace();
             }
