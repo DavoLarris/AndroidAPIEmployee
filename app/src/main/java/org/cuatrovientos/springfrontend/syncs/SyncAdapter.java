@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
+import android.support.annotation.IntegerRes;
 import android.util.Log;
 
 import org.cuatrovientos.springfrontend.Interface.EmployeeManager;
@@ -20,7 +21,6 @@ import org.cuatrovientos.springfrontend.Model.Employee;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by David on 18/02/2017.
@@ -90,12 +90,7 @@ public class SyncAdapter  extends AbstractThreadedSyncAdapter {
                 employee.setId(cursor.getInt(cursor.getColumnIndex("_id")));
                 employee.setName(cursor.getString(cursor.getColumnIndex("name")));
                 employee.setTelephone(cursor.getString(cursor.getColumnIndex("telephone")));
-                try {
-                    date = iso8601Format.parse(cursor.getString(cursor.getColumnIndex("birthDate")));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                employee.setBirthDate(date);
+                employee.setBirthDate(cursor.getString(cursor.getColumnIndex("birthDate")));
                 employee.setIdBackend(cursor.getInt(cursor.getColumnIndex("id_backend")));
 
                 employeeManager.updateEmployee(employee, employee.getIdBackend());
@@ -142,10 +137,7 @@ public class SyncAdapter  extends AbstractThreadedSyncAdapter {
             ContentValues contentValues = new ContentValues();
             contentValues.put("name", employee.getName());
             contentValues.put("telephone", employee.getTelephone());
-
-            String dateeee = iso8601Format.format(employee.getBirthDate());
-
-            contentValues.put("birthDate", dateeee);
+            contentValues.put("birthDate", employee.getBirthDate());
             contentValues.put("id_backend", employee.getId());
 
             // We finally make the request to the content provider
@@ -169,29 +161,20 @@ public class SyncAdapter  extends AbstractThreadedSyncAdapter {
                 Employee employee = new Employee();
                 employee.setName(cursor.getString(cursor.getColumnIndex("name")));
                 employee.setTelephone(cursor.getString(cursor.getColumnIndex("telephone")));
-                try {
-                    date = iso8601Format.parse(cursor.getString(cursor.getColumnIndex("birthDate")));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                employee.setBirthDate(date);
+                employee.setBirthDate(cursor.getString(cursor.getColumnIndex("birthDate")));
 
                 int id = employeeManager.createEmployee(employee);
                 contentValues = new ContentValues();
                 contentValues.put("_id", cursor.getInt(cursor.getColumnIndex("_id")));
                 contentValues.put("name", employee.getName());
                 contentValues.put("telephone", employee.getTelephone());
-
-                String dateeee = iso8601Format.format(employee.getBirthDate());
-                contentValues.put("birthDate", dateeee);
+                contentValues.put("birthDate", employee.getBirthDate());
                 contentValues.put("id_backend", id);
 
                 cursor.moveToNext();
+                // To mark local records as sent.
+                provider.update( Uri.parse(contentUri), contentValues, null, null);
             }
-
-            // To mark local records as sent.
-            int total = provider.update( Uri.parse(contentUri), contentValues, null, null);
-            Log.d("LARRIS:DEBUG", "Marked as sent " + total);
         }
     }
 }

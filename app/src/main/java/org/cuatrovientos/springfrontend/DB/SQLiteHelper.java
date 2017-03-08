@@ -18,7 +18,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
     public static final String CREATESQLEMP = "create table employee "+
             " (_id integer primary key autoincrement, " +
             " name text not null," +
-            " birthDate datetime not null," +
+            " birthDate text not null," +
             " telephone integer not null default 0," +
             " id_backend integer not null);"; //This field is to know if its in the backend
     public static final String CREATESQLDEL = "create table deleted "+
@@ -27,7 +27,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
     public static final String CREATESQLUPD = "create table updated "+
             " (_id integer primary key autoincrement, " +
             " name text not null," +
-            " birthDate datetime not null," +
+            " birthDate text not null," +
             " telephone integer not null default 0," +
             " id_backend integer not null);";
 

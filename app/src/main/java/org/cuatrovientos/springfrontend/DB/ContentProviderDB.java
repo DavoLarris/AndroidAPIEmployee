@@ -2,26 +2,17 @@ package org.cuatrovientos.springfrontend.DB;
 
 import android.content.ContentProvider;
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.MatrixCursor;
-import android.icu.text.DateFormat;
-import android.icu.text.SimpleDateFormat;
-import android.icu.util.Calendar;
 import android.net.Uri;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import org.cuatrovientos.springfrontend.Model.Employee;
 
-import java.text.FieldPosition;
-import java.text.Format;
 import java.text.ParseException;
-import java.text.ParsePosition;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * Created by David on 18/02/2017.
@@ -137,12 +128,7 @@ public class ContentProviderDB extends ContentProvider {
         employee.setId(values.getAsInteger("id"));
         employee.setName(values.getAsString("name"));
         employee.setTelephone(values.getAsString("telephone"));
-        try {
-            date = iso8601Format.parse(values.getAsString("birthDate"));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        employee.setBirthDate(date);
+        employee.setBirthDate(values.getAsString("birthDate"));
         employee.setIdBackend(values.getAsInteger("id_backend"));
 
         Long id = dbAdapter.insertEmployee(employee);
@@ -178,15 +164,9 @@ public class ContentProviderDB extends ContentProvider {
         employee.setId(values.getAsInteger("id"));
         employee.setName(values.getAsString("name"));
         employee.setTelephone(values.getAsString("telephone"));
-
-        try {
-            date = iso8601Format.parse(values.getAsString("birthDate"));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        employee.setBirthDate(date);
+        employee.setBirthDate(values.getAsString("birthDate"));
         employee.setIdBackend(values.getAsInteger("id_backend"));
 
-        return dbAdapter.updateRegistry(Long.parseLong(uri.getLastPathSegment()), employee);
+        return dbAdapter.updateRegistry(values.getAsInteger("id_backend"), employee);
     }
 }

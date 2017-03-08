@@ -65,7 +65,7 @@ public class addActivity extends AppCompatActivity implements View.OnClickListen
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
-                dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 date.setText(dateFormatter.format(newDate.getTime()));
             }
 
@@ -85,15 +85,14 @@ public class addActivity extends AppCompatActivity implements View.OnClickListen
         if (name.getText() != null || date.getText() != null || telephone.getText() != null){
             ContentValues contentValues = new ContentValues();
             Uri uri = Uri.parse(myUri);
-            SimpleDateFormat iso8601Format = new SimpleDateFormat("dd-MM-yyyy");
 
             Date datee = null;
             try {
-                datee = iso8601Format.parse(date.getText().toString()); //Mirar esto que valor toma pa poner directamente getText sino
+                datee = dateFormatter.parse(date.getText().toString()); //Mirar esto que valor toma pa poner directamente getText sino
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            String dateeee = iso8601Format.format(datee);
+            String dateeee = dateFormatter.format(datee);
 
             contentValues.put("name", String.valueOf(name.getText()));
             contentValues.put("birthDate", dateeee);
@@ -108,6 +107,7 @@ public class addActivity extends AppCompatActivity implements View.OnClickListen
             );
 
             Snackbar.make(view, "Inserted!", Snackbar.LENGTH_LONG).show();
+            finish();
         } else {
             Snackbar.make(view, "Fill fields, please", Snackbar.LENGTH_LONG).show();
         }

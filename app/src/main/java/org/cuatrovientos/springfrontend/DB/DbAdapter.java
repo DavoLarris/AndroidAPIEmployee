@@ -68,9 +68,7 @@ public class DbAdapter {
         // Agrega los datos.
         registro.put("name", employee.getName());
         registro.put("telephone", employee.getTelephone());
-
-        String dateeee = iso8601Format.format(employee.getBirthDate());
-        registro.put("birthDate", dateeee);
+        registro.put("birthDate", employee.getBirthDate());
 
         registro.put("id_backend", employee.getIdBackend());
 
@@ -202,10 +200,7 @@ public class DbAdapter {
         // Agrega los datos.
         registry.put("name", employee.getName());
         registry.put("telephone", employee.getTelephone());
-
-        String dateeee = iso8601Format.format(employee.getBirthDate());
-        registry.put("birthDate", dateeee
-        );
+        registry.put("birthDate", employee.getBirthDate());
         registry.put("id_backend", employee.getIdBackend());
 
         return db.update("employee", registry,
@@ -217,9 +212,7 @@ public class DbAdapter {
         row.put("_id", id);
         row.put("name", employee.getName());
         row.put("telephone", employee.getTelephone());
-
-        String dateeee = iso8601Format.format(employee.getBirthDate());
-        row.put("birthDate", dateeee);
+        row.put("birthDate", employee.getBirthDate());
         row.put("id_backend", employee.getIdBackend());
 
 
